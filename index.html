@@ -76,6 +76,7 @@
             aspect-ratio: 3 / 4;
             perspective: 1000px;
             cursor: pointer;
+            position: relative; /* Cho trái tim bay lên */
         }
 
         .card-inner {
@@ -107,35 +108,52 @@
             word-wrap: break-word;
         }
         
-        /* Mặt trong của các lá bài câu hỏi */
+        /* --- ⭐ THIẾT KẾ MỚI CHO MẶT TRONG CÁC LÁ BÀI (Mặt hiển thị câu hỏi) --- */
         .card-front {
-            background-color: var(--card-bg);
             transform: rotateY(180deg);
             font-weight: 600;
             position: relative;
             background-size: cover;
             background-position: center;
+            /* Các màu nền gradient sẽ được gán bằng JS */
         }
+        /* Lớp phủ trắng mờ để làm nổi bật chữ trên nền ảnh */
         .card-front::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.75); /* Điều chỉnh độ mờ ở đây */
             border-radius: 15px;
         }
+        /* Đảm bảo chữ câu hỏi nằm trên lớp phủ */
         .question-text {
             position: relative; 
+            z-index: 2; /* Đảm bảo chữ nằm trên lớp phủ và trái tim bay */
+            font-size: 1em;
+            color: var(--text-color);
+        }
+        /* Trái tim bay lên từ mặt trước của thẻ */
+        .card-front .small-heart {
+            position: absolute;
+            opacity: 0;
+            animation: floatUpSmallHeart 2s ease-out forwards;
+            font-size: 12px;
+            z-index: 1; /* Nằm dưới chữ nhưng trên nền */
+        }
+        @keyframes floatUpSmallHeart {
+            from { transform: translateY(0) scale(0.5); opacity: 0.8; }
+            to { transform: translateY(-50px) scale(1.2); opacity: 0; }
         }
 
-        /* --- ⭐ THIẾT KẾ MỚI CHO MẶT SAU CÁC LÁ BÀI CÂU HỎI --- */
+
+        /* --- THIẾT KẾ MẶT SAU CÁC LÁ BÀI (Mặt chưa lật) --- */
         .card-back {
             background-color: var(--secondary-color); /* Màu dự phòng nếu ảnh lỗi */
             background-size: cover;
             background-position: center;
-            position: relative; /* Cần thiết cho các lớp phủ/hiệu ứng */
-            overflow: hidden; /* Đảm bảo các hiệu ứng không tràn ra ngoài */
+            position: relative;
+            overflow: hidden;
         }
-        /* Hiệu ứng hạt lấp lánh hoặc trái tim nhỏ */
         .card-back::after {
             content: '';
             position: absolute;
@@ -166,10 +184,9 @@
         #final-card .card-front::before {
              background: rgba(255, 255, 255, 0.6);
         }
-        /* Mặt sau lá bài cuối cũng có thể có hiệu ứng tương tự */
         #final-card .card-back::after {
-            animation: none; /* Không cho lá cuối có hiệu ứng pulse light */
-            background: none; /* Hoặc có thể đặt hiệu ứng khác nếu muốn */
+            animation: none;
+            background: none;
         }
 
 
@@ -197,14 +214,14 @@
         #end-screen.show .end-content { transform: scale(1); }
         #final-message { font-size: 1.3em; font-weight: 700; color: var(--primary-color); }
 
-        /* --- HIỆU ỨNG TRÁI TIM BAY --- */
-        .heart {
+        /* --- HIỆU ỨNG TRÁI TIM BAY TOÀN MÀN HÌNH --- */
+        .big-heart {
             position: fixed;
-            animation: floatUp 5s ease-in forwards;
+            animation: floatUpBigHeart 5s ease-in forwards;
             opacity: 0.9;
             z-index: 1001;
         }
-        @keyframes floatUp {
+        @keyframes floatUpBigHeart {
             from { bottom: -20px; opacity: 1; transform: translateX(0); }
             to { bottom: 100vh; opacity: 0; transform: translateX(var(--x-end)); }
         }
@@ -217,7 +234,7 @@
             #card-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .card-front .question-text { font-size: 0.8em; }
             #final-message { font-size: 1.1em; }
-            #final-card .card-front { font-size: 1.2em; }
+            #final-card .card-front .question-text { font-size: 1.2em; }
         }
         
     </style>
@@ -255,8 +272,23 @@
         // 'https://i.pinimg.com/564x/a4/c8/17/a4c81734268e0d5a3c94f0e7d5a5a5a5.jpg' (Nền gradient hồng tím với trái tim)
 
 
-        // 2. HÌNH NỀN CHO MẶT TRONG CỦA CÁC LÁ BÀI CÂU HỎI (Mặt đã lật)
+        // ⭐ 2. HÌNH NỀN CHO MẶT TRONG CỦA CÁC LÁ BÀI CÂU HỎI (Mặt đã lật)
+        // Đây sẽ là nền ảnh cho 30 lá bài câu hỏi. Lớp phủ sẽ làm mờ ảnh này để chữ dễ đọc.
         const cardFrontBackgroundImage = 'https://i.pinimg.com/564x/e7/31/00/e731003889150cb683b5842a5a51025a.jpg';
+
+        // ⭐ 3. CÁC MÀU SẮC GRADIENT CHO NỀN MẶT TRONG CỦA CÁC LÁ BÀI CÂU HỎI
+        // Mỗi lá bài khi lật sẽ chọn ngẫu nhiên một trong các gradient này làm nền.
+        const cardFrontGradients = [
+            'linear-gradient(135deg, #FFC0CB, #FFDAB9)', // Hồng đào - cam pastel
+            'linear-gradient(135deg, #FFDAB9, #FFEDED)', // Cam pastel - hồng nhạt
+            'linear-gradient(135deg, #E0BBE4, #957DAD)', // Tím pastel - tím hoa cà
+            'linear-gradient(135deg, #FFB6C1, #F08080)', // Hồng nhạt - san hô
+            'linear-gradient(135deg, #A7BED3, #C6E0E7)', // Xanh dương nhạt - xanh da trời pastel
+            'linear-gradient(135deg, #F8BBD0, #FFD1DC)', // Hồng kẹo bông - hồng baby
+            'linear-gradient(135deg, #B2DFDB, #80CBC4)', // Xanh bạc hà - xanh ngọc
+            'linear-gradient(135deg, #FFF9C4, #FFECB3)', // Vàng kem - vàng mơ
+        ];
+
 
         const questions = [
             "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?", "Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?", "Nếu có một ngày để làm mọi thứ mình muốn, chúng ta sẽ làm gì cùng nhau?", "Nỗi sợ lớn nhất của em/anh là gì?", "Mục tiêu lớn nhất trong 5 năm tới của bạn là gì?", "Điều gì bạn học được từ mối quan hệ trước đây?", "Em/anh định nghĩa thế nào là một tình yêu trọn vẹn?", "Khoảnh khắc nào bạn cảm thấy tự hào nhất về đối phương?", "Nếu có thể thay đổi một điều về bản thân, bạn sẽ thay đổi gì?", "Điều gì nhỏ nhặt mà em/anh làm khiến bạn luôn mỉm cười?", "Ước mơ thầm kín nhất của bạn là gì?", "Chúng ta có thể làm gì để mối quan hệ này tốt đẹp hơn mỗi ngày?", "Điều gì khiến bạn cảm thấy an toàn và bình yên nhất?", "Kể về một lần bạn cảm thấy thực sự tổn thương.", "Ngôn ngữ tình yêu chính của bạn là gì?", "Bạn ngưỡng mộ nhất điều gì ở bố mẹ của đối phương?", "Theo bạn, điều gì là quan trọng nhất để duy trì một mối quan hệ bền vững?", "Nếu chúng ta có con, bạn muốn dạy chúng điều gì nhất?", "Một bài hát đặc biệt gợi cho bạn nhớ về chúng ta?", "Điều điên rồ nhất bạn muốn cùng em/anh thực hiện là gì?", "Bạn định nghĩa thế nào là 'thành công' trong cuộc sống?", "Điều gì có thể ngay lập tức khiến tâm trạng bạn tốt lên?", "Kỷ niệm tuổi thơ nào bạn trân trọng nhất?", "Bạn học được bài học lớn nhất nào từ những sai lầm của mình?", "Nếu có một siêu năng lực, bạn sẽ chọn năng lực gì và tại sao?", "Điều gì bạn muốn đối phương hiểu về mình hơn?", "Lần đầu tiên gặp nhau, ấn tượng của bạn về đối phương là gì?", "Bạn thích nhất điều gì khi chúng ta ở bên nhau trong im lặng?", "Mục tiêu chung nào bạn muốn chúng ta cùng nhau đạt được?", "Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
@@ -272,10 +304,14 @@
         
         const revealCardText = "Món quà cho em nè 💖";
         
-        // 3. HÌNH ẢNH NỀN CHO MẶT TRƯỚC LÁ BÀI BÍ ẨN (Lá bài cuối cùng khi đã lật)
+        // ⭐ 4. HÌNH ẢNH NỀN CHO MẶT TRƯỚC LÁ BÀI BÍ ẨN (Lá bài cuối cùng khi đã lật)
+        // Đây là nền ảnh riêng cho lá bài bí ẩn khi đã lật.
         const finalCardFrontImage = 'https://i.pinimg.com/564x/4b/ea/e3/4beae3438d8a8c88a832386127885ddf.jpg';
+        // ⭐ 5. MÀU NỀN GRADIENT CHO LÁ BÀI BÍ ẨN (Khi đã lật)
+        // Đây là gradient màu riêng cho lá bài bí ẩn khi đã lật.
+        const finalCardFrontGradient = 'linear-gradient(135deg, #FF69B4, #FF1493)'; // Hồng đậm - hồng tươi
         
-        // 4. HÌNH NỀN CHO MẶT SAU LÁ BÀI BÍ ẨN (Lá bài cuối cùng khi chưa lật)
+        // ⭐ 6. HÌNH NỀN CHO MẶT SAU LÁ BÀI BÍ ẨN (Lá bài cuối cùng khi chưa lật)
         // Để nó đồng bộ với các lá bài khác, có thể dùng lại cardBackBackgroundImage
         const finalCardBackImage = 'https://i.pinimg.com/564x/4b/ea/e3/4beae3438d8a8c88a832386127885ddf.jpg';
 
@@ -303,25 +339,27 @@
 
         function createCards() {
             const shuffledQuestions = shuffle([...questions]);
-            // Tạo một bản sao và xáo trộn pool ảnh cho mặt sau
             const shuffledCardBackImages = shuffle([...cardBackImagesPool]);
+            const shuffledFrontGradients = shuffle([...cardFrontGradients]); // Xáo trộn gradient
             
             for (let i = 0; i < 30; i++) {
                 const card = document.createElement('div');
                 card.classList.add('card');
-                // Lấy ảnh từ pool ảnh mặt sau đã xáo trộn, lặp lại nếu không đủ
                 const backImageUrl = shuffledCardBackImages.length > 0 ? shuffledCardBackImages[i % shuffledCardBackImages.length] : cardBackBackgroundImage; 
+                const frontGradient = shuffledFrontGradients[i % shuffledFrontGradients.length]; // Lấy gradient ngẫu nhiên
                 
                 card.innerHTML = `
                     <div class="card-inner">
                         <div class="card-face card-back" style="background-image: url('${backImageUrl}')"></div>
-                        <div class="card-face card-front" style="background-image: url('${cardFrontBackgroundImage}')">
+                        <div class="card-face card-front" style="background-image: url('${cardFrontBackgroundImage}'); background: ${frontGradient};">
                             <span class="question-text">${shuffledQuestions[i]}</span>
                         </div>
                     </div>`;
                 card.addEventListener('click', () => {
                     if (!card.classList.contains('flipped')) {
                         card.classList.add('flipped');
+                        // Tạo trái tim nhỏ bay lên từ mặt thẻ
+                        createSmallHearts(card.querySelector('.card-front'));
                         flippedCards++;
                         checkEndGame();
                     }
@@ -344,7 +382,7 @@
             finalCard.innerHTML = `
                 <div class="card-inner">
                     <div class="card-face card-back" style="background-image: url('${finalCardBackImage}')"></div>
-                    <div class="card-face card-front" style="background-image: url('${finalCardFrontImage}')">
+                    <div class="card-face card-front" style="background-image: url('${finalCardFrontImage}'); background: ${finalCardFrontGradient};">
                         <span class="question-text">${revealCardText}</span>
                     </div>
                 </div>`;
@@ -353,6 +391,7 @@
             finalCard.addEventListener('click', () => {
                 if (!finalCard.classList.contains('flipped')) {
                     finalCard.classList.add('flipped');
+                    createSmallHearts(finalCard.querySelector('.card-front')); // Trái tim bay lên từ lá cuối
                     setTimeout(showFinalMessage, 1000);
                 }
             });
@@ -361,14 +400,15 @@
         function showFinalMessage() {
             finalMessage.textContent = finalMessageText;
             endScreen.classList.add('show');
-            createHearts(50);
+            createBigHearts(50); // Trái tim lớn bay toàn màn hình
         }
         
-        function createHearts(count) {
+        // Hàm tạo trái tim lớn cho màn hình kết thúc
+        function createBigHearts(count) {
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
-                    heart.classList.add('heart');
+                    heart.classList.add('big-heart'); // Dùng class riêng cho trái tim lớn
                     const heartSymbols = ['❤️', '💖', '💕', '💓', '💗', '💞'];
                     heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
                     heart.style.left = `${Math.random() * 100}vw`;
@@ -379,6 +419,23 @@
                     document.body.appendChild(heart);
                     setTimeout(() => { heart.remove(); }, 5000);
                 }, Math.random() * 3000);
+            }
+        }
+
+        // ⭐ Hàm mới: Tạo trái tim nhỏ bay lên từ mỗi lá bài khi lật
+        function createSmallHearts(cardFrontElement) {
+            for (let i = 0; i < 5; i++) { // 5 trái tim nhỏ mỗi lần lật
+                setTimeout(() => {
+                    const smallHeart = document.createElement('span');
+                    smallHeart.classList.add('small-heart');
+                    const heartSymbols = ['💖', '💕', '✨'];
+                    smallHeart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+                    smallHeart.style.left = `${Math.random() * 80 + 10}%`; // Vị trí ngang ngẫu nhiên
+                    smallHeart.style.bottom = `${Math.random() * 20 + 10}%`; // Vị trí dọc ngẫu nhiên
+                    smallHeart.style.animationDelay = `${Math.random() * 0.5}s`; // Trễ nhỏ cho hiệu ứng tự nhiên
+                    cardFrontElement.appendChild(smallHeart);
+                    setTimeout(() => { smallHeart.remove(); }, 2000); // Gỡ bỏ sau khi bay lên
+                }, i * 100); // Xuất hiện lần lượt
             }
         }
         
