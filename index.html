@@ -106,12 +106,27 @@
             text-align: center;
             word-wrap: break-word;
         }
-
+        
+        /* --- ⭐ THIẾT KẾ MỚI CHO MẶT TRONG CÁC LÁ BÀI --- */
         .card-front {
             background-color: var(--card-bg);
             transform: rotateY(180deg);
-            font-size: 1em;
             font-weight: 600;
+            position: relative; /* Cần thiết cho lớp phủ */
+            background-size: cover;
+            background-position: center;
+        }
+        /* Lớp phủ trắng mờ để làm nổi bật chữ */
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(255, 255, 255, 0.75); /* Điều chỉnh độ mờ ở đây */
+            border-radius: 15px;
+        }
+        /* Đảm bảo chữ câu hỏi nằm trên lớp phủ */
+        .question-text {
+            position: relative; 
         }
 
         .card-back {
@@ -120,7 +135,7 @@
             background-position: center;
         }
         
-        /* --- ⭐ LÁ BÀI BÍ ẨN CUỐI CÙNG --- */
+        /* --- LÁ BÀI BÍ ẨN CUỐI CÙNG --- */
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
@@ -134,60 +149,42 @@
             font-weight: 700;
             padding: 20px;
         }
+        #final-card .card-front::before {
+             background: rgba(255, 255, 255, 0.6); /* Lớp phủ lá bài cuối có thể trong hơn */
+        }
 
 
         /* --- MÀN HÌNH KẾT THÚC --- */
         #end-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 245, 248, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 0; visibility: hidden;
             transition: opacity 1s ease, visibility 1s ease;
             z-index: 1000;
         }
-        
-        #end-screen.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
+        #end-screen.show { opacity: 1; visibility: visible; }
         .end-content {
-            background: white;
-            padding: 30px;
-            border-radius: 30px;
+            background: white; padding: 30px; border-radius: 30px;
             box-shadow: 0 10px 30px rgba(255, 143, 171, 0.4);
             transform: scale(0.5);
             transition: transform 1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-            text-align: center;
-            max-width: 90%;
+            text-align: center; max-width: 90%;
         }
-        
-        #end-screen.show .end-content {
-            transform: scale(1);
-        }
-
-        #final-message {
-            font-size: 1.3em;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
+        #end-screen.show .end-content { transform: scale(1); }
+        #final-message { font-size: 1.3em; font-weight: 700; color: var(--primary-color); }
 
         /* --- HIỆU ỨNG TRÁI TIM BAY --- */
         .heart {
             position: fixed;
             animation: floatUp 5s ease-in forwards;
             opacity: 0.9;
-            z-index: 1001; /* Đảm bảo tim bay lên trên cùng */
+            z-index: 1001;
         }
-        
         @keyframes floatUp {
             from { bottom: -20px; opacity: 1; transform: translateX(0); }
             to { bottom: 100vh; opacity: 0; transform: translateX(var(--x-end)); }
@@ -199,7 +196,7 @@
             h1 { font-size: 1.8em; }
             p { font-size: 0.9em; }
             #card-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .card-front { font-size: 0.8em; padding: 5px; }
+            .card-front .question-text { font-size: 0.8em; }
             #final-message { font-size: 1.1em; }
             #final-card .card-front { font-size: 1.2em; }
         }
@@ -229,6 +226,10 @@
         // =========================================================================
 
         const backgroundImageLink = 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF';
+        
+        // ⭐ 1. HÌNH NỀN CHO MẶT TRONG CỦA CÁC LÁ BÀI CÂU HỎI
+        // Thay link này để đổi nền cho tất cả các lá bài
+        const cardFrontBackgroundImage = 'https://i.pinimg.com/564x/e7/31/00/e731003889150cb683b5842a5a51025a.jpg';
 
         const questions = [
             "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?", "Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?", "Nếu có một ngày để làm mọi thứ mình muốn, chúng ta sẽ làm gì cùng nhau?", "Nỗi sợ lớn nhất của em/anh là gì?", "Mục tiêu lớn nhất trong 5 năm tới của bạn là gì?", "Điều gì bạn học được từ mối quan hệ trước đây?", "Em/anh định nghĩa thế nào là một tình yêu trọn vẹn?", "Khoảnh khắc nào bạn cảm thấy tự hào nhất về đối phương?", "Nếu có thể thay đổi một điều về bản thân, bạn sẽ thay đổi gì?", "Điều gì nhỏ nhặt mà em/anh làm khiến bạn luôn mỉm cười?", "Ước mơ thầm kín nhất của bạn là gì?", "Chúng ta có thể làm gì để mối quan hệ này tốt đẹp hơn mỗi ngày?", "Điều gì khiến bạn cảm thấy an toàn và bình yên nhất?", "Kể về một lần bạn cảm thấy thực sự tổn thương.", "Ngôn ngữ tình yêu chính của bạn là gì?", "Bạn ngưỡng mộ nhất điều gì ở bố mẹ của đối phương?", "Theo bạn, điều gì là quan trọng nhất để duy trì một mối quan hệ bền vững?", "Nếu chúng ta có con, bạn muốn dạy chúng điều gì nhất?", "Một bài hát đặc biệt gợi cho bạn nhớ về chúng ta?", "Điều điên rồ nhất bạn muốn cùng em/anh thực hiện là gì?", "Bạn định nghĩa thế nào là 'thành công' trong cuộc sống?", "Điều gì có thể ngay lập tức khiến tâm trạng bạn tốt lên?", "Kỷ niệm tuổi thơ nào bạn trân trọng nhất?", "Bạn học được bài học lớn nhất nào từ những sai lầm của mình?", "Nếu có một siêu năng lực, bạn sẽ chọn năng lực gì và tại sao?", "Điều gì bạn muốn đối phương hiểu về mình hơn?", "Lần đầu tiên gặp nhau, ấn tượng của bạn về đối phương là gì?", "Bạn thích nhất điều gì khi chúng ta ở bên nhau trong im lặng?", "Mục tiêu chung nào bạn muốn chúng ta cùng nhau đạt được?", "Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
@@ -239,9 +240,12 @@
         ];
 
         const finalMessageText = "Anh nghĩ sau buổi nói chuyện hôm nay mình có thể hiểu nhau nhìu hơn rất nhiều rồi ha em, anh cũng rất mong mình không còn 1 xíu nào hiểu lầm nào hết trơn á . Anh rất yêu em ❤️";
-
-        // ⭐ TÊN CHO LÁ BÀI BÍ ẨN
+        
         const revealCardText = "Món quà cho em nè 💖";
+        
+        // ⭐ 2. HÌNH ẢNH NỀN CHO MẶT TRƯỚC LÁ BÀI BÍ ẨN (Lá bài cuối)
+        const finalCardFrontImage = 'https://i.pinimg.com/564x/4b/ea/e3/4beae3438d8a8c88a832386127885ddf.jpg';
+
 
         // =========================================================================
         // === ⚙️ HỆ THỐNG XỬ LÝ (Không cần chỉnh sửa phần dưới này) ⚙️ ===
@@ -273,7 +277,14 @@
                 const card = document.createElement('div');
                 card.classList.add('card');
                 const imageUrl = imagePool.length > 0 ? imagePool[i % imagePool.length] : ''; 
-                card.innerHTML = `<div class="card-inner"><div class="card-face card-back" style="background-image: url('${imageUrl}')"></div><div class="card-face card-front">${shuffledQuestions[i]}</div></div>`;
+                // ⭐ Cập nhật HTML để bao bọc câu hỏi trong <span> và thêm ảnh nền
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-face card-back" style="background-image: url('${imageUrl}')"></div>
+                        <div class="card-face card-front" style="background-image: url('${cardFrontBackgroundImage}')">
+                            <span class="question-text">${shuffledQuestions[i]}</span>
+                        </div>
+                    </div>`;
                 card.addEventListener('click', () => {
                     if (!card.classList.contains('flipped')) {
                         card.classList.add('flipped');
@@ -287,36 +298,33 @@
 
         function checkEndGame() {
             if (flippedCards === 30) {
-                setTimeout(revealFinalCard, 1200); // Đợi 1.2s rồi hiện lá bài cuối
+                setTimeout(revealFinalCard, 1200);
             }
         }
 
-        // ⭐ HÀM MỚI: TẠO VÀ HIỂN THỊ LÁ BÀI BÍ ẨN
         function revealFinalCard() {
             const finalCard = document.createElement('div');
-            finalCard.classList.add('card', 'final-card'); // Thêm class mới
-            finalCard.id = 'final-card'; // Thêm ID
-
+            finalCard.classList.add('card', 'final-card');
+            finalCard.id = 'final-card';
             const randomImage = cardImages[Math.floor(Math.random() * cardImages.length)];
+            // ⭐ Cập nhật HTML cho lá bài cuối để có nền riêng
             finalCard.innerHTML = `
                 <div class="card-inner">
                     <div class="card-face card-back" style="background-image: url('${randomImage}')"></div>
-                    <div class="card-face card-front">${revealCardText}</div>
-                </div>
-            `;
-            
+                    <div class="card-face card-front" style="background-image: url('${finalCardFrontImage}')">
+                        <span class="question-text">${revealCardText}</span>
+                    </div>
+                </div>`;
             cardContainer.appendChild(finalCard);
 
-            // Thêm sự kiện click cho lá bài cuối cùng
             finalCard.addEventListener('click', () => {
                 if (!finalCard.classList.contains('flipped')) {
                     finalCard.classList.add('flipped');
-                    setTimeout(showFinalMessage, 1000); // Đợi 1s cho hiệu ứng lật
+                    setTimeout(showFinalMessage, 1000);
                 }
             });
         }
 
-        // ⭐ HÀM MỚI: HIỂN THỊ LỜI NHẮN VÀ HIỆU ỨNG
         function showFinalMessage() {
             finalMessage.textContent = finalMessageText;
             endScreen.classList.add('show');
