@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HIỂU NHAU HƠN NHÉ EM ❤️</title>
+    <title> YÊU HƯƠNG ❤️</title>
     <style>
         /* --- CÀI ĐẶT FONT CHỮ VÀ BIẾN MÀU --- */
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap');
@@ -188,8 +188,8 @@
 <body>
 
     <div class="header">
-        <h1>HIỂU NHAU HƠN NHÉ EM ❤️</h1>
-        <p>Lật từng lá bài để khám phá những điều thú vị về nhau nhé!</p>
+        <h1>HIỂU NHAU HƠN NHÉ EM 💕 </h1>
+        <p>Mình nói chuyện một xíu nha em yêu 💗 </p>
     </div>
 
     <div id="card-container"></div>
@@ -218,16 +218,45 @@
         ];
 
         const questions = [
-            "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?", "Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?", "Nếu có một ngày để làm mọi thứ mình muốn, chúng ta sẽ làm gì cùng nhau?", "Nỗi sợ lớn nhất của em/anh là gì?", "Mục tiêu lớn nhất trong 5 năm tới của bạn là gì?", "Điều gì bạn học được từ mối quan hệ trước đây?", "Em/anh định nghĩa thế nào là một tình yêu trọn vẹn?", "Khoảnh khắc nào bạn cảm thấy tự hào nhất về đối phương?", "Nếu có thể thay đổi một điều về bản thân, bạn sẽ thay đổi gì?", "Điều gì nhỏ nhặt mà em/anh làm khiến bạn luôn mỉm cười?", "Ước mơ thầm kín nhất của bạn là gì?", "Chúng ta có thể làm gì để mối quan hệ này tốt đẹp hơn mỗi ngày?", "Điều gì khiến bạn cảm thấy an toàn và bình yên nhất?", "Kể về một lần bạn cảm thấy thực sự tổn thương.", "Ngôn ngữ tình yêu chính của bạn là gì?", "Bạn ngưỡng mộ nhất điều gì ở bố mẹ của đối phương?", "Theo bạn, điều gì là quan trọng nhất để duy trì một mối quan hệ bền vững?", "Nếu chúng ta có con, bạn muốn dạy chúng điều gì nhất?", "Một bài hát đặc biệt gợi cho bạn nhớ về chúng ta?", "Điều điên rồ nhất bạn muốn cùng em/anh thực hiện là gì?", "Bạn định nghĩa thế nào là 'thành công' trong cuộc sống?", "Điều gì có thể ngay lập tức khiến tâm trạng bạn tốt lên?", "Kỷ niệm tuổi thơ nào bạn trân trọng nhất?", "Bạn học được bài học lớn nhất nào từ những sai lầm của mình?", "Nếu có một siêu năng lực, bạn sẽ chọn năng lực gì và tại sao?", "Điều gì bạn muốn đối phương hiểu về mình hơn?", "Lần đầu tiên gặp nhau, ấn tượng của bạn về đối phương là gì?", "Bạn thích nhất điều gì khi chúng ta ở bên nhau trong im lặng?", "Mục tiêu chung nào bạn muốn chúng ta cùng nhau đạt được?", "Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
-        ];
+            "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?", 
+"Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?",
+"Nỗi sợ lớn nhất của em/anh là gì?", 
+"Nếu có thể thay đổi một điều về bản thân, bạn sẽ thay đổi gì?",
+"Điều gì nhỏ nhặt mà em/anh làm khiến bạn luôn mỉm cười?",
+"Kể về một lần bạn cảm thấy thực sự tổn thương.", 
+"Theo bạn, điều gì là quan trọng nhất để duy trì một mối quan hệ bền vững?",
+"Điều điên rồ nhất bạn muốn cùng em/anh thực hiện là gì?", 
+"Điều gì có thể ngay lập tức khiến tâm trạng bạn tốt lên?", 
+"Kỷ niệm nào bạn trân trọng nhất trong tình yêu ?",
+"Bạn học được bài học lớn nhất nào từ những sai lầm của mình?", 
+"Điều gì bạn muốn đối phương hiểu về mình hơn?", 
+"Mục tiêu chung nào bạn muốn chúng ta cùng nhau đạt được?", 
+"Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
+'Điều gì khiến bạn cảm thấy được yêu thương và an toàn nhất trong mối quan hệ này?',
+'Khi bạn chia sẻ điều gì đó quan trọng hoặc khó khăn, bạn muốn tôi phản ứng như thế nào để bạn cảm thấy được lắng nghe và thấu hiểu?',
+'Điều gì trong cách tôi nói hoặc hành động khiến bạn cảm thấy khó chịu, bị tổn thương hoặc không được tôn trọng nhất?',
+'Khi chúng ta bất đồng, phản ứng tự nhiên của bạn là gì?',
+'Khi một cuộc cãi vã trở nên căng thẳng, bạn cần điều gì từ tôi hoặc từ chính bản thân để cả hai cùng "hạ nhiệt" và trở lại trạng thái bình tĩnh để thảo luận?',
+'Điều gì khiến bạn cảm thấy được tôn trọng ngay cả khi chúng ta đang tranh cãi?',
+'Sau khi chúng ta giải quyết một bất đồng, điều gì giúp bạn cảm thấy mối quan hệ đã thực sự hàn gắn và trở lại bình thường?',
+'Trong một cuộc tranh cãi, những hành vi/lời nói nào là "giới hạn đỏ" (hoặc giới hạn) mà cả hai chúng ta không bao giờ được phép vượt qua?',
+'Theo bạn, bất đồng lớn gần nhất của chúng ta đã dạy cho bạn điều gì về bản thân và về mối quan hệ của chúng ta?',
+'Điều gì khiến bạn cảm thấy được tôn trọng ngay cả khi chúng ta đang tranh cãi?',
+'Sau khi chúng ta giải quyết một bất đồng, điều gì giúp bạn cảm thấy mối quan hệ đã thực sự hàn gắn và trở lại bình thường?',
+'em/anhcó 1 câu hỏi đối phương điều gì cũng được ',
+'em/anh có 1 câu hỏi đối phương điều gì cũng được',
+'Nếu bạn phát hiện ra tôi đang giấu diếm một chuyện gì đó nhỏ, phản ứng đầu tiên của bạn sẽ là gì và bạn muốn tôi giải thích như thế nào?',
+'Có thói quen hàng ngày nào của tôi mà bạn thực sự yêu thích, và có thói quen nào (dù nhỏ) mà bạn muốn tôi thay đổi để cuộc sống chung dễ chịu hơn?',
+'em/anh có 1 câu hỏi đối phương điều gì cũng được',
+    ];
 
         const cardImages = [
             'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA', 'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v', 'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw', 'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF', 'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM', 'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8', 'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ', 'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V', 'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe', 'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii', 'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp', 'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ', 'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw', 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF', 'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA', 'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v', 'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw', 'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF', 'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM', 'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8', 'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ', 'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V', 'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe', 'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii', 'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp', 'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ', 'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw', 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF', 'https://lh3.googleusercontent.com/d/1Ca_c3VbfIrPLINNMhLYU7GDweXcG7vgS', 'https://lh3.googleusercontent.com/d/1kAlWSNGXiXLICpjk4BCzRakb83UUug7A', 'https://lh3.googleusercontent.com/d/16vtaU7zeaOhAcJL0QUE4lH8tlfzFhIqn', 'https://lh3.googleusercontent.com/d/1Q9_Vw7qHuEecz0yqmFVrKVeF0NPpoOjj', 'https://lh3.googleusercontent.com/d/1kuv555a0yJqRBB7KPnRS78kn4Bb2JWQC', 'https://lh3.googleusercontent.com/d/1JRFTXOiLUJLBInRQR5MB4nqtNihZAL7r', 'https://lh3.googleusercontent.com/d/1osHnx2hE9d1oy4erw8bBPt-Nv3D5OUS6', 'https://lh3.googleusercontent.com/d/1kpl7zcx3QcAu5NVyiqipyWwqHd-Sgui5', 'https://lh3.googleusercontent.com/d/1W-zawgHKGTa0LouGgjcKukIs5W8OC91Q', 'https://lh3.googleusercontent.com/d/1MfcedwoB7yANSQdGYf9liClb1NTQhco-', 'https://lh3.googleusercontent.com/d/1j41jA05B56r5vBA1iP1KM_2Zzr5Wljvr', 'https://lh3.googleusercontent.com/d/1uVCtnzOTsDAB2G4RS9gxqsgt98eO0kOC', 'https://lh3.googleusercontent.com/d/1m4oqCHb3bAJT_ix-YEQocQ3H6HncxW5f', 'https://lh3.googleusercontent.com/d/15O-IkdpF1chLzQDg2SOJdhpOZi6ez8T9', 'https://lh3.googleusercontent.com/d/1E2qhZKWS_LGml-KOpKEb-ZRiiCoifdxa',
         ];
 
-        const finalMessageText = "Anh nghĩ sau buổi nói chuyện hôm nay mình có thể hiểu nhau nhìu hơn rất nhiều rồi ha em, anh cũng rất mong mình không còn 1 xíu nào hiểu lầm nào hết trơn á . Anh rất yêu em ❤️";
+        const finalMessageText = " Trước hết anh cảm ơn em bé của anh, cảm ơn vì em bé đã yêu anh thương anh dù anh có khó chịu , có những tính trẻ con thì em vẫn ở đây bây giờ để nói chuyện và tâm sự với anh. Anh rất yêu em ❤️";
         
-        const revealCardText = "Món quà cho em nè 💖";
+        const revealCardText = "Lời nói anh dành cho em  💖";
         
         const finalCardBackImage = 'https://i.pinimg.com/564x/4b/ea/e3/4beae3438d8a8c88a832386127885ddf.jpg';
         
@@ -336,3 +365,4 @@
     </script>
 </body>
 </html>
+
