@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Talk Cùng Người Thương ❤️</title>
+    <style>
+        /* --- CÀI ĐẶT FONT CHỮ VÀ BIẾN MÀU --- */
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap');
+
+        :root {
+            --primary-color: #ff8fab; /* Hồng xinh */
+            --secondary-color: #f8c9d4; /* Hồng nhạt */
+            --text-color: #5c3b3b; /* Nâu chữ */
+            --bg-color: #fff5f8; /* Màu nền */
+            --card-bg: #ffffff;
+        }
+
+        /* --- THIẾT KẾ TOÀN TRANG --- */
+        body {
+            font-family: 'Quicksand', sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            background-color: var(--bg-color);
+            background-size: cover;
+            background-position: center;
+            transition: background-image 0.5s ease;
+            color: var(--text-color);
+            text-align: center;
+            overflow-x: hidden;
+        }
+
+        /* --- TIÊU ĐỀ VÀ HƯỚNG DẪN --- */
+        .header {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 15px rgba(255, 143, 171, 0.3);
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 2.5em;
+        }
+        
+        p {
+            margin: 5px 0 0 0;
+            font-weight: 500;
+        }
+
+        /* --- KHU VỰC CÁC LÁ BÀI --- */
+        #card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            aspect-ratio: 3 / 4;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        /* Mặt trước lá bài (có câu hỏi) */
+        .card-front {
+            background-color: var(--card-bg);
+            transform: rotateY(180deg);
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        /* Mặt sau lá bài (có hình ảnh) */
+        .card-back {
+            background-color: var(--secondary-color);
+            background-size: cover;
+            background-position: center;
+            font-size: 3em;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* --- MÀN HÌNH KẾT THÚC --- */
+        #end-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 245, 248, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease, visibility 1s ease;
+            z-index: 1000;
+        }
+        
+        #end-screen.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .end-content {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(255, 143, 171, 0.4);
+            transform: scale(0.5);
+            transition: transform 1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            text-align: center;
+        }
+        
+        #end-screen.show .end-content {
+            transform: scale(1);
+        }
+
+        #bouquet {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        #final-message {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: var(--primary-color);
+            max-width: 500px;
+        }
+
+        /* --- HIỆU ỨNG TRÁI TIM BAY --- */
+        .heart {
+            position: fixed;
+            font-size: 20px;
+            animation: floatUp 5s ease-in forwards;
+            opacity: 0.8;
+            z-index: 999;
+        }
+        
+        @keyframes floatUp {
+            from {
+                bottom: -20px;
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                bottom: 100vh;
+                opacity: 0;
+                transform: translateX(var(--x-end));
+            }
+        }
+        
+        /* --- NÚT TÙY CHỈNH --- */
+        .controls {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 143, 171, 0.3);
+            margin-bottom: 20px;
+        }
+        
+        .controls label {
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        .controls input[type="file"] {
+            display: none;
+        }
+        
+        .custom-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        .custom-button:hover {
+            background-color: #ff6b9a;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Deep Talk ❤️</h1>
+        <p>Lật từng lá bài để khám phá những điều thú vị về nhau nhé!</p>
+    </div>
+
+    <div class="controls">
+        <label for="bg-upload" class="custom-button">Đổi Ảnh Nền</label>
+        <input type="file" id="bg-upload" accept="image/*">
+    </div>
+
+    <div id="card-container"></div>
+
+    <div id="end-screen">
+        <div class="end-content">
+            <img id="bouquet" src="https://i.ibb.co/L5hS0h9/bouquet-of-flowers.png" alt="Bó hoa xinh">
+            <p id="final-message"></p>
+        </div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // =========================================================================
+        // === 🖍️ KHU VỰC TÙY CHỈNH DÀNH CHO BẠN 🖍️ ===
+        // =========================================================================
+
+        // 1. CHỈNH SỬA CÂU HỎI DEEP TALK (30 CÂU)
+        const questions = [
+            "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?",
+            "Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?",
+            "Nếu có một ngày để làm mọi thứ mình muốn, chúng ta sẽ làm gì cùng nhau?",
+            "Nỗi sợ lớn nhất của em/anh là gì?",
+            "Mục tiêu lớn nhất trong 5 năm tới của bạn là gì?",
+            "Điều gì bạn học được từ mối quan hệ trước đây?",
+            "Em/anh định nghĩa thế nào là một tình yêu trọn vẹn?",
+            "Khoảnh khắc nào bạn cảm thấy tự hào nhất về đối phương?",
+            "Nếu có thể thay đổi một điều về bản thân, bạn sẽ thay đổi gì?",
+            "Điều gì nhỏ nhặt mà em/anh làm khiến bạn luôn mỉm cười?",
+            "Ước mơ thầm kín nhất của bạn là gì?",
+            "Chúng ta có thể làm gì để mối quan hệ này tốt đẹp hơn mỗi ngày?",
+            "Điều gì khiến bạn cảm thấy an toàn và bình yên nhất?",
+            "Kể về một lần bạn cảm thấy thực sự tổn thương.",
+            "Ngôn ngữ tình yêu chính của bạn là gì?",
+            "Bạn ngưỡng mộ nhất điều gì ở bố mẹ của đối phương?",
+            "Theo bạn, điều gì là quan trọng nhất để duy trì một mối quan hệ bền vững?",
+            "Nếu chúng ta có con, bạn muốn dạy chúng điều gì nhất?",
+            "Một bài hát đặc biệt gợi cho bạn nhớ về chúng ta?",
+            "Điều điên rồ nhất bạn muốn cùng em/anh thực hiện là gì?",
+            "Bạn định nghĩa thế nào là 'thành công' trong cuộc sống?",
+            "Điều gì có thể ngay lập tức khiến tâm trạng bạn tốt lên?",
+            "Kỷ niệm tuổi thơ nào bạn trân trọng nhất?",
+            "Bạn học được bài học lớn nhất nào từ những sai lầm của mình?",
+            "Nếu có một siêu năng lực, bạn sẽ chọn năng lực gì và tại sao?",
+            "Điều gì bạn muốn đối phương hiểu về mình hơn?",
+            "Lần đầu tiên gặp nhau, ấn tượng của bạn về đối phương là gì?",
+            "Bạn thích nhất điều gì khi chúng ta ở bên nhau trong im lặng?",
+            "Mục tiêu chung nào bạn muốn chúng ta cùng nhau đạt được?",
+            "Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
+        ];
+
+        // 2. THÊM ẢNH CHO MẶT SAU LÁ BÀI (Thêm bao nhiêu tùy ý)
+        // Bạn chỉ cần dán link ảnh mới vào danh sách dưới đây
+        const cardImages = [
+            'https://i.pinimg.com/564x/a7/67/f1/a767f185d47e4538e42f9b1b426a8c35.jpg',
+            'https://i.pinimg.com/564x/e7/87/9b/e7879b882c575a2784532b212f7a8f3b.jpg',
+            'https://i.pinimg.com/564x/b8/b2/f0/b8b2f0a152335198889115bf286e41b2.jpg',
+            'https://i.pinimg.com/564x/44/29/77/4429774a3f656037a89e9f90916e6d19.jpg',
+            'https://i.pinimg.com/564x/ac/e7/8a/ace78ad5a94fa4d9f95b5465715206f8.jpg',
+            'https://i.pinimg.com/564x/54/a1/3e/54a13ebeca965f7c3558f0037a3c3c17.jpg',
+            'https://i.pinimg.com/564x/45/63/87/45638708761b65d1b315629c5b4d7c86.jpg',
+            'https://i.pinimg.com/564x/07/77/9c/07779c4a796e2e5842c1616c87e14e7a.jpg',
+            'https://i.pinimg.com/564x/92/f0/75/92f07502424683515456d9255c256a42.jpg',
+            'https://i.pinimg.com/564x/72/70/4e/72704eb023de9c25b3400b1a0e1a1793.jpg'
+            // Thêm link ảnh của bạn vào đây, ví dụ: 'https://link-anh-cua-ban.com/hinh-1.jpg',
+        ];
+
+        // 3. CHỈNH SỬA LỜI NHẮN CUỐI CÙNG
+        const finalMessageText = "Cảm ơn em/anh đã cùng nhau chia sẻ những điều sâu kín nhất. Hành trình của chúng ta sẽ luôn là những khám phá ngọt ngào như thế này. Yêu em/anh! ❤️";
+
+        // =========================================================================
+        // === ⚙️ HỆ THỐNG XỬ LÝ (Không cần chỉnh sửa phần dưới này) ⚙️ ===
+        // =========================================================================
+        
+        const cardContainer = document.getElementById('card-container');
+        const endScreen = document.getElementById('end-screen');
+        const finalMessage = document.getElementById('final-message');
+        const bgUpload = document.getElementById('bg-upload');
+        let flippedCards = 0;
+
+        // Hàm xáo trộn mảng
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Hàm tạo các lá bài
+        function createCards() {
+            const shuffledQuestions = shuffle([...questions]);
+            const imagePool = shuffle([...cardImages]);
+
+            for (let i = 0; i < 30; i++) {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                
+                // Lấy ảnh ngẫu nhiên, lặp lại nếu hết ảnh
+                const imageUrl = imagePool[i % imagePool.length]; 
+
+                card.innerHTML = `
+                    <div class="card-inner">
+                        <div class="card-face card-back" style="background-image: url('${imageUrl}')">
+                            <span>💖</span>
+                        </div>
+                        <div class="card-face card-front">
+                            ${shuffledQuestions[i]}
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('click', () => {
+                    if (!card.classList.contains('flipped')) {
+                        card.classList.add('flipped');
+                        flippedCards++;
+                        checkEndGame();
+                    }
+                });
+                
+                cardContainer.appendChild(card);
+            }
+        }
+
+        // Hàm kiểm tra kết thúc game
+        function checkEndGame() {
+            if (flippedCards === 30) {
+                setTimeout(() => {
+                    finalMessage.textContent = finalMessageText;
+                    endScreen.classList.add('show');
+                    createHearts(50); // Tạo 50 trái tim bay lên
+                }, 1000); // Đợi 1 giây sau khi lật lá cuối cùng
+            }
+        }
+        
+        // Hàm tạo hiệu ứng trái tim
+        function createHearts(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('heart');
+                    heart.innerHTML = ['❤️', '💖', '💕', '💓', '💗'][Math.floor(Math.random() * 5)];
+                    heart.style.left = `${Math.random() * 100}vw`;
+                    heart.style.animationDuration = `${Math.random() * 2 + 3}s`; // 3-5 giây
+                    heart.style.fontSize = `${Math.random() * 15 + 10}px`;
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => {
+                        heart.remove();
+                    }, 5000); // Xóa trái tim sau 5 giây
+                }, Math.random() * 3000); // Rải rác thời gian xuất hiện
+            }
+        }
+
+        // Xử lý đổi ảnh nền
+        bgUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.body.style.backgroundImage = `url('${e.target.result}')`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Bắt đầu
+        createCards();
+    });
+    </script>
+</body>
+</html>
