@@ -12,7 +12,7 @@
             --primary-color: #ff8fab; /* Hồng xinh */
             --secondary-color: #f8c9d4; /* Hồng nhạt */
             --text-color: #5c3b3b; /* Nâu chữ */
-            --bg-color: #fff5f8; /* Màu nền */
+            --bg-color: #fff5f8; /* Màu nền dự phòng */
             --card-bg: #ffffff;
         }
 
@@ -22,13 +22,18 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            background-color: var(--bg-color);
+            background-color: var(--bg-color); /* Màu nền dự phòng nếu ảnh không tải được */
             background-size: cover;
             background-position: center;
+            background-attachment: fixed; /* Giữ ảnh nền cố định khi cuộn */
             transition: background-image 0.5s ease;
             color: var(--text-color);
             text-align: center;
             overflow-x: hidden;
+            min-height: 100vh; /* Đảm bảo chiều cao trang để background bao phủ */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         /* --- TIÊU ĐỀ VÀ HƯỚNG DẪN --- */
@@ -39,6 +44,8 @@
             box-shadow: 0 4px 15px rgba(255, 143, 171, 0.3);
             margin-bottom: 30px;
             display: inline-block;
+            max-width: 90%;
+            width: fit-content;
         }
 
         h1 {
@@ -60,6 +67,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
+            flex-grow: 1; /* Cho phép container giãn nở */
         }
 
         .card {
@@ -93,6 +101,8 @@
             align-items: center;
             padding: 15px;
             box-sizing: border-box;
+            text-align: center;
+            word-wrap: break-word; /* Ngắt chữ khi quá dài */
         }
 
         /* Mặt trước lá bài (có câu hỏi) */
@@ -120,7 +130,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 245, 248, 0.9);
+            background: rgba(255, 245, 248, 0.95); /* Nền hơi đậm hơn */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -144,22 +154,18 @@
             transform: scale(0.5);
             transition: transform 1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
             text-align: center;
+            max-width: 80%; /* Giới hạn chiều rộng */
         }
         
         #end-screen.show .end-content {
             transform: scale(1);
         }
 
-        #bouquet {
-            max-width: 200px;
-            margin-bottom: 20px;
-        }
-
         #final-message {
             font-size: 1.5em;
             font-weight: 700;
             color: var(--primary-color);
-            max-width: 500px;
+            margin-top: 20px; /* Khoảng cách từ nội dung khác nếu có */
         }
 
         /* --- HIỆU ỨNG TRÁI TIM BAY --- */
@@ -184,39 +190,6 @@
             }
         }
         
-        /* --- NÚT TÙY CHỈNH --- */
-        .controls {
-            background: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 15px rgba(255, 143, 171, 0.3);
-            margin-bottom: 20px;
-        }
-        
-        .controls label {
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-right: 10px;
-        }
-        
-        .controls input[type="file"] {
-            display: none;
-        }
-        
-        .custom-button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: background-color 0.3s;
-        }
-        
-        .custom-button:hover {
-            background-color: #ff6b9a;
-        }
-
     </style>
 </head>
 <body>
@@ -226,16 +199,10 @@
         <p>Lật từng lá bài để khám phá những điều thú vị về nhau nhé!</p>
     </div>
 
-    <div class="controls">
-        <label for="bg-upload" class="custom-button">Đổi Ảnh Nền</label>
-        <input type="file" id="bg-upload" accept="image/*">
-    </div>
-
     <div id="card-container"></div>
 
     <div id="end-screen">
         <div class="end-content">
-            <img id="bouquet" src="https://drive.google.com/file/d/1msM7AG5g_fB7EmYwLe0daKHDn_xzYmCf/view?usp=drive_link" alt="Bó hoa xinh">
             <p id="final-message"></p>
         </div>
     </div>
@@ -247,7 +214,12 @@
         // === 🖍️ KHU VỰC TÙY CHỈNH DÀNH CHO BẠN 🖍️ ===
         // =========================================================================
 
-        // 1. CHỈNH SỬA CÂU HỎI DEEP TALK (30 CÂU)
+        // 1. ĐẶT LINK ẢNH NỀN CỐ ĐỊNH (Sử dụng link trực tiếp, ví dụ từ Google Drive)
+        // **THAY THẾ LINK NÀY BẰNG LINK ẢNH CỦA BẠN**
+        const backgroundImageLink = 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF'; 
+        // Ví dụ link Google Drive đã chuyển đổi: 'https://lh3.googleusercontent.com/d/MÃ_ID_ẢNH_CỦA_BẠN'
+
+        // 2. CHỈNH SỬA CÂU HỎI DEEP TALK (30 CÂU)
         const questions = [
             "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?",
             "Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?",
@@ -281,27 +253,27 @@
             "Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
         ];
 
-        // 2. THÊM ẢNH CHO MẶT SAU LÁ BÀI (Thêm bao nhiêu tùy ý)
-        // Bạn chỉ cần dán link ảnh mới vào danh sách dưới đây
+        // 3. THÊM ẢNH CHO MẶT SAU LÁ BÀI (Thêm bao nhiêu tùy ý)
+        // **DÁN CÁC LINK ẢNH TRỰC TIẾP CỦA BẠN VÀO ĐÂY** (Ví dụ link Google Drive đã chuyển đổi)
         const cardImages = [
-           'https://drive.google.com/file/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA/view?usp=drive_link', 
-'https://drive.google.com/file/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v/view?usp=drive_link',
-'https://drive.google.com/file/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw/view?usp=drive_link', 
-'https://drive.google.com/file/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF/view?usp=drive_link', 
-'https://drive.google.com/file/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM/view?usp=drive_link', 
-'https://drive.google.com/file/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8/view?usp=drive_link', 
-'https://drive.google.com/file/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ/view?usp=drive_link', 
-'https://drive.google.com/file/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V/view?usp=drive_link', 
-'https://drive.google.com/file/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe/view?usp=drive_link', 
-'https://drive.google.com/file/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii/view?usp=drive_link', 
-'https://drive.google.com/file/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp/view?usp=drive_link', 
-'https://drive.google.com/file/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ/view?usp=drive_link', 
-'https://drive.google.com/file/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw/view?usp=drive_link', 
-'https://drive.google.com/file/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF/view?usp=drive_link'
-            // Thêm link ảnh của bạn vào đây, ví dụ: 'https://link-anh-cua-ban.com/hinh-1.jpg',
+'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA', 
+'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v',
+'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw', 
+'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF', 
+'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM', 
+'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8', 
+'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ', 
+'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V', 
+'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe', 
+'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii', 
+'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp', 
+'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ', 
+'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw', 
+'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF',
+            // Thêm các link ảnh của bạn vào đây.
         ];
 
-        // 3. CHỈNH SỬA LỜI NHẮN CUỐI CÙNG
+        // 4. CHỈNH SỬA LỜI NHẮN CUỐI CÙNG
         const finalMessageText = "Cảm ơn em/anh đã cùng nhau chia sẻ những điều sâu kín nhất. Hành trình của chúng ta sẽ luôn là những khám phá ngọt ngào như thế này. Yêu em/anh! ❤️";
 
         // =========================================================================
@@ -311,8 +283,14 @@
         const cardContainer = document.getElementById('card-container');
         const endScreen = document.getElementById('end-screen');
         const finalMessage = document.getElementById('final-message');
-        const bgUpload = document.getElementById('bg-upload');
         let flippedCards = 0;
+
+        // Thiết lập ảnh nền ngay khi tải trang
+        if (backgroundImageLink) {
+            document.body.style.backgroundImage = `url('${backgroundImageLink}')`;
+        } else {
+            document.body.style.backgroundColor = 'var(--bg-color)'; // Dùng màu dự phòng nếu không có link ảnh nền
+        }
 
         // Hàm xáo trộn mảng
         function shuffle(array) {
@@ -326,14 +304,17 @@
         // Hàm tạo các lá bài
         function createCards() {
             const shuffledQuestions = shuffle([...questions]);
-            const imagePool = shuffle([...cardImages]);
+            const imagePool = shuffle([...cardImages]); // Xáo trộn pool ảnh
+            if (imagePool.length === 0) {
+                console.warn("Không có ảnh nào trong cardImages. Các lá bài sẽ có nền mặc định.");
+            }
 
             for (let i = 0; i < 30; i++) {
                 const card = document.createElement('div');
                 card.classList.add('card');
                 
-                // Lấy ảnh ngẫu nhiên, lặp lại nếu hết ảnh
-                const imageUrl = imagePool[i % imagePool.length]; 
+                // Lấy ảnh ngẫu nhiên từ pool, lặp lại nếu hết ảnh
+                const imageUrl = imagePool.length > 0 ? imagePool[i % imagePool.length] : ''; 
 
                 card.innerHTML = `
                     <div class="card-inner">
@@ -375,10 +356,17 @@
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.classList.add('heart');
-                    heart.innerHTML = ['❤️', '💖', '💕', '💓', '💗'][Math.floor(Math.random() * 5)];
+                    // Random biểu tượng trái tim
+                    const heartSymbols = ['❤️', '💖', '💕', '💓', '💗', '💞'];
+                    heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
                     heart.style.left = `${Math.random() * 100}vw`;
                     heart.style.animationDuration = `${Math.random() * 2 + 3}s`; // 3-5 giây
                     heart.style.fontSize = `${Math.random() * 15 + 10}px`;
+                    
+                    // Tạo biến CSS để tạo hiệu ứng bay ngang ngẫu nhiên
+                    const xEnd = (Math.random() - 0.5) * 200; // -100px đến 100px
+                    heart.style.setProperty('--x-end', `${xEnd}px`);
+
                     document.body.appendChild(heart);
                     
                     setTimeout(() => {
@@ -388,22 +376,9 @@
             }
         }
 
-        // Xử lý đổi ảnh nền
-        bgUpload.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    document.body.style.backgroundImage = `url('${e.target.result}')`;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         // Bắt đầu
         createCards();
     });
     </script>
 </body>
-
 </html>
