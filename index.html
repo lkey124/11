@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> HIỂU NHAU HƠN NHÉ EM  ❤️</title>
+    <title>HIỂU NHAU HƠN NHÉ EM ❤️</title>
     <style>
         /* --- CÀI ĐẶT FONT CHỮ VÀ BIẾN MÀU --- */
         @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap');
@@ -22,15 +22,15 @@
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
-            background-color: var(--bg-color); /* Màu nền dự phòng nếu ảnh không tải được */
+            background-color: var(--bg-color);
             background-size: cover;
             background-position: center;
-            background-attachment: fixed; /* Giữ ảnh nền cố định khi cuộn */
+            background-attachment: fixed;
             transition: background-image 0.5s ease;
             color: var(--text-color);
             text-align: center;
             overflow-x: hidden;
-            min-height: 100vh; /* Đảm bảo chiều cao trang để background bao phủ */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -38,11 +38,11 @@
 
         /* --- TIÊU ĐỀ VÀ HƯỚNG DẪN --- */
         .header {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.85);
             padding: 15px 20px;
             border-radius: 20px;
             box-shadow: 0 4px 15px rgba(255, 143, 171, 0.3);
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             display: inline-block;
             max-width: 90%;
             width: fit-content;
@@ -51,7 +51,7 @@
         h1 {
             color: var(--primary-color);
             margin: 0;
-            font-size: 2.5em;
+            font-size: 2.2em; /* Giảm nhẹ cỡ chữ */
         }
         
         p {
@@ -63,11 +63,13 @@
         #card-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 20px;
+            gap: 15px; /* Giảm khoảng cách */
+            width: 100%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-            flex-grow: 1; /* Cho phép container giãn nở */
+            padding: 10px;
+            box-sizing: border-box;
+            flex-grow: 1;
         }
 
         .card {
@@ -99,13 +101,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 10px; /* Giảm padding */
             box-sizing: border-box;
             text-align: center;
-            word-wrap: break-word; /* Ngắt chữ khi quá dài */
+            word-wrap: break-word;
         }
 
-        /* Mặt trước lá bài (có câu hỏi) */
         .card-front {
             background-color: var(--card-bg);
             transform: rotateY(180deg);
@@ -113,14 +114,10 @@
             font-weight: 600;
         }
 
-        /* Mặt sau lá bài (có hình ảnh) */
         .card-back {
             background-color: var(--secondary-color);
             background-size: cover;
             background-position: center;
-            font-size: 3em;
-            color: white;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         /* --- MÀN HÌNH KẾT THÚC --- */
@@ -130,7 +127,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 245, 248, 0.95); /* Nền hơi đậm hơn */
+            background: rgba(255, 245, 248, 0.95);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -138,7 +135,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 1s ease, visibility 1s ease;
-            z-index: 1000;
+            z-index: 1000; /* Lớp nền mờ */
         }
         
         #end-screen.show {
@@ -148,13 +145,13 @@
 
         .end-content {
             background: white;
-            padding: 40px;
+            padding: 30px; /* Giảm padding */
             border-radius: 30px;
             box-shadow: 0 10px 30px rgba(255, 143, 171, 0.4);
             transform: scale(0.5);
             transition: transform 1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
             text-align: center;
-            max-width: 80%; /* Giới hạn chiều rộng */
+            max-width: 90%;
         }
         
         #end-screen.show .end-content {
@@ -162,19 +159,17 @@
         }
 
         #final-message {
-            font-size: 1.5em;
+            font-size: 1.3em; /* Giảm cỡ chữ */
             font-weight: 700;
             color: var(--primary-color);
-            margin-top: 20px; /* Khoảng cách từ nội dung khác nếu có */
         }
 
         /* --- HIỆU ỨNG TRÁI TIM BAY --- */
         .heart {
             position: fixed;
-            font-size: 20px;
             animation: floatUp 5s ease-in forwards;
-            opacity: 0.8;
-            z-index: 999;
+            opacity: 0.9;
+            z-index: 1001; /* ⭐ QUAN TRỌNG: Đặt z-index cao hơn end-screen để tim bay lên trên */
         }
         
         @keyframes floatUp {
@@ -189,13 +184,38 @@
                 transform: translateX(var(--x-end));
             }
         }
+
+        /* --- ⭐ TỐI ƯU CHO ĐIỆN THOẠI --- */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            p {
+                font-size: 0.9em;
+            }
+            #card-container {
+                /* Hiển thị 2 cột trên điện thoại */
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+            .card-front {
+                font-size: 0.8em; /* Chữ nhỏ hơn để vừa thẻ */
+                padding: 5px;
+            }
+            #final-message {
+                font-size: 1.1em;
+            }
+        }
         
     </style>
 </head>
 <body>
 
     <div class="header">
-        <h1>Deep Talk ❤️</h1>
+        <h1>HIỂU NHAU HƠN NHÉ EM ❤️</h1>
         <p>Lật từng lá bài để khám phá những điều thú vị về nhau nhé!</p>
     </div>
 
@@ -214,63 +234,32 @@
         // === 🖍️ KHU VỰC TÙY CHỈNH DÀNH CHO BẠN 🖍️ ===
         // =========================================================================
 
-        // 1. ĐẶT LINK ẢNH NỀN CỐ ĐỊNH (Sử dụng link trực tiếp, ví dụ từ Google Drive)
-        // **THAY THẾ LINK NÀY BẰNG LINK ẢNH CỦA BẠN**
-        const backgroundImageLink = 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF'; 
-        // Ví dụ link Google Drive đã chuyển đổi: 'https://lh3.googleusercontent.com/d/MÃ_ID_ẢNH_CỦA_BẠN'
+        // 1. ĐẶT LINK ẢNH NỀN CỐ ĐỊNH
+        // ⭐ SỬA LỖI: Thêm dấu ' và ;
+        const backgroundImageLink = 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF'; ';
 
         // 2. CHỈNH SỬA CÂU HỎI DEEP TALK (30 CÂU)
         const questions = [
-            "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?",
-            "Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?",
-            "Nếu có một ngày để làm mọi thứ mình muốn, chúng ta sẽ làm gì cùng nhau?",
-            "Nỗi sợ lớn nhất của em/anh là gì?",
-            "Mục tiêu lớn nhất trong 5 năm tới của bạn là gì?",
-            "Điều gì bạn học được từ mối quan hệ trước đây?",
-            "Em/anh định nghĩa thế nào là một tình yêu trọn vẹn?",
-            "Khoảnh khắc nào bạn cảm thấy tự hào nhất về đối phương?",
-            "Nếu có thể thay đổi một điều về bản thân, bạn sẽ thay đổi gì?",
-            "Điều gì nhỏ nhặt mà em/anh làm khiến bạn luôn mỉm cười?",
-            "Ước mơ thầm kín nhất của bạn là gì?",
-            "Chúng ta có thể làm gì để mối quan hệ này tốt đẹp hơn mỗi ngày?",
-            "Điều gì khiến bạn cảm thấy an toàn và bình yên nhất?",
-            "Kể về một lần bạn cảm thấy thực sự tổn thương.",
-            "Ngôn ngữ tình yêu chính của bạn là gì?",
-            "Bạn ngưỡng mộ nhất điều gì ở bố mẹ của đối phương?",
-            "Theo bạn, điều gì là quan trọng nhất để duy trì một mối quan hệ bền vững?",
-            "Nếu chúng ta có con, bạn muốn dạy chúng điều gì nhất?",
-            "Một bài hát đặc biệt gợi cho bạn nhớ về chúng ta?",
-            "Điều điên rồ nhất bạn muốn cùng em/anh thực hiện là gì?",
-            "Bạn định nghĩa thế nào là 'thành công' trong cuộc sống?",
-            "Điều gì có thể ngay lập tức khiến tâm trạng bạn tốt lên?",
-            "Kỷ niệm tuổi thơ nào bạn trân trọng nhất?",
-            "Bạn học được bài học lớn nhất nào từ những sai lầm của mình?",
-            "Nếu có một siêu năng lực, bạn sẽ chọn năng lực gì và tại sao?",
-            "Điều gì bạn muốn đối phương hiểu về mình hơn?",
-            "Lần đầu tiên gặp nhau, ấn tượng của bạn về đối phương là gì?",
-            "Bạn thích nhất điều gì khi chúng ta ở bên nhau trong im lặng?",
-            "Mục tiêu chung nào bạn muốn chúng ta cùng nhau đạt được?",
-            "Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
+            "Kỷ niệm nào về chúng ta khiến em/anh nhớ nhất?", "Điều gì ở đối phương khiến bạn cảm thấy được yêu thương nhất?", "Nếu có một ngày để làm mọi thứ mình muốn, chúng ta sẽ làm gì cùng nhau?", "Nỗi sợ lớn nhất của em/anh là gì?", "Mục tiêu lớn nhất trong 5 năm tới của bạn là gì?", "Điều gì bạn học được từ mối quan hệ trước đây?", "Em/anh định nghĩa thế nào là một tình yêu trọn vẹn?", "Khoảnh khắc nào bạn cảm thấy tự hào nhất về đối phương?", "Nếu có thể thay đổi một điều về bản thân, bạn sẽ thay đổi gì?", "Điều gì nhỏ nhặt mà em/anh làm khiến bạn luôn mỉm cười?", "Ước mơ thầm kín nhất của bạn là gì?", "Chúng ta có thể làm gì để mối quan hệ này tốt đẹp hơn mỗi ngày?", "Điều gì khiến bạn cảm thấy an toàn và bình yên nhất?", "Kể về một lần bạn cảm thấy thực sự tổn thương.", "Ngôn ngữ tình yêu chính của bạn là gì?", "Bạn ngưỡng mộ nhất điều gì ở bố mẹ của đối phương?", "Theo bạn, điều gì là quan trọng nhất để duy trì một mối quan hệ bền vững?", "Nếu chúng ta có con, bạn muốn dạy chúng điều gì nhất?", "Một bài hát đặc biệt gợi cho bạn nhớ về chúng ta?", "Điều điên rồ nhất bạn muốn cùng em/anh thực hiện là gì?", "Bạn định nghĩa thế nào là 'thành công' trong cuộc sống?", "Điều gì có thể ngay lập tức khiến tâm trạng bạn tốt lên?", "Kỷ niệm tuổi thơ nào bạn trân trọng nhất?", "Bạn học được bài học lớn nhất nào từ những sai lầm của mình?", "Nếu có một siêu năng lực, bạn sẽ chọn năng lực gì và tại sao?", "Điều gì bạn muốn đối phương hiểu về mình hơn?", "Lần đầu tiên gặp nhau, ấn tượng của bạn về đối phương là gì?", "Bạn thích nhất điều gì khi chúng ta ở bên nhau trong im lặng?", "Mục tiêu chung nào bạn muốn chúng ta cùng nhau đạt được?", "Nếu phải dùng ba từ để miêu tả tình yêu của chúng ta, đó sẽ là gì?"
         ];
 
-        // 3. THÊM ẢNH CHO MẶT SAU LÁ BÀI (Thêm bao nhiêu tùy ý)
-        // **DÁN CÁC LINK ẢNH TRỰC TIẾP CỦA BẠN VÀO ĐÂY** (Ví dụ link Google Drive đã chuyển đổi)
+        // 3. THÊM ẢNH CHO MẶT SAU LÁ BÀI
+        // ⭐ SỬA LỖI: Thêm dấu ' và , cho từng link
         const cardImages = [
-'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA', 
-'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v',
-'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw', 
-'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF', 
-'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM', 
-'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8', 
-'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ', 
-'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V', 
-'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe', 
-'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii', 
-'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp', 
-'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ', 
-'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw', 
-'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF',
-            // Thêm các link ảnh của bạn vào đây.
+            'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA', ',
+            'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v',
+            'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw', ',
+            'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF', ',
+            'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM', ',
+            'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8', ',
+            'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ', ',
+            'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V', ',
+            'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe', ',
+            'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii', ',
+            'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp', ',
+            'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ', ',
+            'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw', ',
+            'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF',
         ];
 
         // 4. CHỈNH SỬA LỜI NHẮN CUỐI CÙNG
@@ -285,14 +274,12 @@
         const finalMessage = document.getElementById('final-message');
         let flippedCards = 0;
 
-        // Thiết lập ảnh nền ngay khi tải trang
         if (backgroundImageLink) {
             document.body.style.backgroundImage = `url('${backgroundImageLink}')`;
         } else {
-            document.body.style.backgroundColor = 'var(--bg-color)'; // Dùng màu dự phòng nếu không có link ảnh nền
+            document.body.style.backgroundColor = 'var(--bg-color)';
         }
 
-        // Hàm xáo trộn mảng
         function shuffle(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -301,19 +288,17 @@
             return array;
         }
 
-        // Hàm tạo các lá bài
         function createCards() {
             const shuffledQuestions = shuffle([...questions]);
-            const imagePool = shuffle([...cardImages]); // Xáo trộn pool ảnh
+            const imagePool = shuffle([...cardImages]);
             if (imagePool.length === 0) {
-                console.warn("Không có ảnh nào trong cardImages. Các lá bài sẽ có nền mặc định.");
+                console.warn("Không có ảnh nào trong cardImages.");
             }
 
             for (let i = 0; i < 30; i++) {
                 const card = document.createElement('div');
                 card.classList.add('card');
                 
-                // Lấy ảnh ngẫu nhiên từ pool, lặp lại nếu hết ảnh
                 const imageUrl = imagePool.length > 0 ? imagePool[i % imagePool.length] : ''; 
 
                 card.innerHTML = `
@@ -339,48 +324,41 @@
             }
         }
 
-        // Hàm kiểm tra kết thúc game
         function checkEndGame() {
             if (flippedCards === 30) {
                 setTimeout(() => {
                     finalMessage.textContent = finalMessageText;
                     endScreen.classList.add('show');
-                    createHearts(50); // Tạo 50 trái tim bay lên
-                }, 1000); // Đợi 1 giây sau khi lật lá cuối cùng
+                    createHearts(50);
+                }, 1000);
             }
         }
         
-        // Hàm tạo hiệu ứng trái tim
         function createHearts(count) {
             for (let i = 0; i < count; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.classList.add('heart');
-                    // Random biểu tượng trái tim
                     const heartSymbols = ['❤️', '💖', '💕', '💓', '💗', '💞'];
                     heart.innerHTML = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
                     heart.style.left = `${Math.random() * 100}vw`;
-                    heart.style.animationDuration = `${Math.random() * 2 + 3}s`; // 3-5 giây
+                    heart.style.animationDuration = `${Math.random() * 2 + 3}s`;
                     heart.style.fontSize = `${Math.random() * 15 + 10}px`;
                     
-                    // Tạo biến CSS để tạo hiệu ứng bay ngang ngẫu nhiên
-                    const xEnd = (Math.random() - 0.5) * 200; // -100px đến 100px
+                    const xEnd = (Math.random() - 0.5) * 200;
                     heart.style.setProperty('--x-end', `${xEnd}px`);
 
                     document.body.appendChild(heart);
                     
                     setTimeout(() => {
                         heart.remove();
-                    }, 5000); // Xóa trái tim sau 5 giây
-                }, Math.random() * 3000); // Rải rác thời gian xuất hiện
+                    }, 5000);
+                }, Math.random() * 3000);
             }
         }
-
-        // Bắt đầu
+        
         createCards();
     });
     </script>
 </body>
 </html>
-
-
