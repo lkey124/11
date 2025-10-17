@@ -51,7 +51,7 @@
         h1 {
             color: var(--primary-color);
             margin: 0;
-            font-size: 2.2em; /* Giảm nhẹ cỡ chữ */
+            font-size: 2.2em;
         }
         
         p {
@@ -63,7 +63,7 @@
         #card-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px; /* Giảm khoảng cách */
+            gap: 15px;
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
@@ -101,7 +101,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 10px; /* Giảm padding */
+            padding: 10px;
             box-sizing: border-box;
             text-align: center;
             word-wrap: break-word;
@@ -135,7 +135,7 @@
             opacity: 0;
             visibility: hidden;
             transition: opacity 1s ease, visibility 1s ease;
-            z-index: 1000; /* Lớp nền mờ */
+            z-index: 1000;
         }
         
         #end-screen.show {
@@ -143,33 +143,63 @@
             visibility: visible;
         }
 
+        /* Lời nhắn và nút bấm ban đầu được ẩn */
+        .end-content, #reveal-button {
+            display: none;
+        }
+
         .end-content {
             background: white;
-            padding: 30px; /* Giảm padding */
+            padding: 30px;
             border-radius: 30px;
             box-shadow: 0 10px 30px rgba(255, 143, 171, 0.4);
             transform: scale(0.5);
-            transition: transform 1s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            transition: transform 1s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 1s;
             text-align: center;
             max-width: 90%;
+            opacity: 0;
         }
         
-        #end-screen.show .end-content {
+        /* Hiệu ứng xuất hiện cho lời nhắn */
+        .end-content.visible {
+            display: block;
+            opacity: 1;
             transform: scale(1);
         }
 
         #final-message {
-            font-size: 1.3em; /* Giảm cỡ chữ */
+            font-size: 1.3em;
             font-weight: 700;
             color: var(--primary-color);
         }
+
+        /* --- NÚT BẤM CUỐI CÙNG --- */
+        #reveal-button.visible {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 143, 171, 0.5);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        #reveal-button.visible:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 143, 171, 0.6);
+        }
+
 
         /* --- HIỆU ỨNG TRÁI TIM BAY --- */
         .heart {
             position: fixed;
             animation: floatUp 5s ease-in forwards;
             opacity: 0.9;
-            z-index: 1001; /* ⭐ QUAN TRỌNG: Đặt z-index cao hơn end-screen để tim bay lên trên */
+            z-index: 1001; /* Đảm bảo tim bay lên trên cùng */
         }
         
         @keyframes floatUp {
@@ -185,29 +215,15 @@
             }
         }
 
-        /* --- ⭐ TỐI ƯU CHO ĐIỆN THOẠI --- */
+        /* --- TỐI ƯU CHO ĐIỆN THOẠI --- */
         @media (max-width: 600px) {
-            body {
-                padding: 10px;
-            }
-            h1 {
-                font-size: 1.8em;
-            }
-            p {
-                font-size: 0.9em;
-            }
-            #card-container {
-                /* Hiển thị 2 cột trên điện thoại */
-                grid-template-columns: repeat(2, 1fr);
-                gap: 10px;
-            }
-            .card-front {
-                font-size: 0.8em; /* Chữ nhỏ hơn để vừa thẻ */
-                padding: 5px;
-            }
-            #final-message {
-                font-size: 1.1em;
-            }
+            body { padding: 10px; }
+            h1 { font-size: 1.8em; }
+            p { font-size: 0.9em; }
+            #card-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .card-front { font-size: 0.8em; padding: 5px; }
+            #final-message { font-size: 1.1em; }
+            #reveal-button.visible { font-size: 1em; padding: 12px 25px; }
         }
         
     </style>
@@ -222,9 +238,10 @@
     <div id="card-container"></div>
 
     <div id="end-screen">
-        <div class="end-content">
+        <div class="end-content" id="end-content">
             <p id="final-message"></p>
         </div>
+        <button id="reveal-button"></button>
     </div>
     
     <script>
@@ -235,7 +252,6 @@
         // =========================================================================
 
         // 1. ĐẶT LINK ẢNH NỀN CỐ ĐỊNH
-        // ⭐ SỬA LỖI: Thêm dấu ' và ;
         const backgroundImageLink = 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF';
 
         // 2. CHỈNH SỬA CÂU HỎI DEEP TALK (30 CÂU)
@@ -244,55 +260,15 @@
         ];
 
         // 3. THÊM ẢNH CHO MẶT SAU LÁ BÀI
-        // ⭐ SỬA LỖI: Thêm dấu ' và , cho từng link
         const cardImages = [
-            'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA',
-            'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v',
-            'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw',
-            'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF',
-            'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM',
-            'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8',
-            'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ',
-            'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V',
-            'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe',
-            'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii',
-            'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp',
-            'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ',
-            'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw',
-            'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF',
-            'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA',
-'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v',
-'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw',
-'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF',
-'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM',
-'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8',
-'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ',
-'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V',
-'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe',
-'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii',
-'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp',
-'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ',
-'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw',
-'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF',
-'https://lh3.googleusercontent.com/d/1Ca_c3VbfIrPLINNMhLYU7GDweXcG7vgS',
-'https://lh3.googleusercontent.com/d/1kAlWSNGXiXLICpjk4BCzRakb83UUug7A',
-'https://lh3.googleusercontent.com/d/16vtaU7zeaOhAcJL0QUE4lH8tlfzFhIqn',
-'https://lh3.googleusercontent.com/d/1Q9_Vw7qHuEecz0yqmFVrKVeF0NPpoOjj',
-'https://lh3.googleusercontent.com/d/1kuv555a0yJqRBB7KPnRS78kn4Bb2JWQC',
-'https://lh3.googleusercontent.com/d/1JRFTXOiLUJLBInRQR5MB4nqtNihZAL7r',
-'https://lh3.googleusercontent.com/d/1osHnx2hE9d1oy4erw8bBPt-Nv3D5OUS6',
-'https://lh3.googleusercontent.com/d/1kpl7zcx3QcAu5NVyiqipyWwqHd-Sgui5',
-'https://lh3.googleusercontent.com/d/1W-zawgHKGTa0LouGgjcKukIs5W8OC91Q',
-'https://lh3.googleusercontent.com/d/1MfcedwoB7yANSQdGYf9liClb1NTQhco-',
-'https://lh3.googleusercontent.com/d/1j41jA05B56r5vBA1iP1KM_2Zzr5Wljvr',
-'https://lh3.googleusercontent.com/d/1uVCtnzOTsDAB2G4RS9gxqsgt98eO0kOC',
-'https://lh3.googleusercontent.com/d/1m4oqCHb3bAJT_ix-YEQocQ3H6HncxW5f',
-'https://lh3.googleusercontent.com/d/15O-IkdpF1chLzQDg2SOJdhpOZi6ez8T9',
-'https://lh3.googleusercontent.com/d/1E2qhZKWS_LGml-KOpKEb-ZRiiCoifdxa',
+            'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA', 'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v', 'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw', 'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF', 'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM', 'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8', 'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ', 'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V', 'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe', 'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii', 'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp', 'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ', 'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw', 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF', 'https://lh3.googleusercontent.com/d/1AHJc2bU0Dt27Jf95MK9MkrvfpYXwc7dA', 'https://lh3.googleusercontent.com/d/1eI64OSklu9-Jv5rmmWQdPpqK6135sy5v', 'https://lh3.googleusercontent.com/d/1V_FoIptCQW2vsFmXV6SRxeq_hI76n3yw', 'https://lh3.googleusercontent.com/d/1KOjMIiscjGwSSahks76Z2ouLoGk9HFnF', 'https://lh3.googleusercontent.com/d/1iN8FY6PkbgJveKYUq_MXGX-I6gyniCkM', 'https://lh3.googleusercontent.com/d/1tqvL-YiogRIWMm8VwJpGSimhAVIrh2Y8', 'https://lh3.googleusercontent.com/d/1AZIuYrFRTFAEOFYZ2SogeolnzByFd9rJ', 'https://lh3.googleusercontent.com/d/1DEOiBpdeLNri2sgd04sdPuOIr35zn70V', 'https://lh3.googleusercontent.com/d/1aQtkr009_3PRxiwolyFTc8zoVKS6fwLe', 'https://lh3.googleusercontent.com/d/1qkFjb2IwsbHNp-M6dbo9mBAyBPK5dSii', 'https://lh3.googleusercontent.com/d/17DqL7uhAMrq63Ba4xZV9HVLorPrqVqDp', 'https://lh3.googleusercontent.com/d/1bKuxkrlYEeZ1X7Scov-LZxh9cTQMiHqJ', 'https://lh3.googleusercontent.com/d/1HY9Y1zmKy7FybKqeEvDTcqUA16P5GJcw', 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF', 'https://lh3.googleusercontent.com/d/1Ca_c3VbfIrPLINNMhLYU7GDweXcG7vgS', 'https://lh3.googleusercontent.com/d/1kAlWSNGXiXLICpjk4BCzRakb83UUug7A', 'https://lh3.googleusercontent.com/d/16vtaU7zeaOhAcJL0QUE4lH8tlfzFhIqn', 'https://lh3.googleusercontent.com/d/1Q9_Vw7qHuEecz0yqmFVrKVeF0NPpoOjj', 'https://lh3.googleusercontent.com/d/1kuv555a0yJqRBB7KPnRS78kn4Bb2JWQC', 'https://lh3.googleusercontent.com/d/1JRFTXOiLUJLBInRQR5MB4nqtNihZAL7r', 'https://lh3.googleusercontent.com/d/1osHnx2hE9d1oy4erw8bBPt-Nv3D5OUS6', 'https://lh3.googleusercontent.com/d/1kpl7zcx3QcAu5NVyiqipyWwqHd-Sgui5', 'https://lh3.googleusercontent.com/d/1W-zawgHKGTa0LouGgjcKukIs5W8OC91Q', 'https://lh3.googleusercontent.com/d/1MfcedwoB7yANSQdGYf9liClb1NTQhco-', 'https://lh3.googleusercontent.com/d/1j41jA05B56r5vBA1iP1KM_2Zzr5Wljvr', 'https://lh3.googleusercontent.com/d/1uVCtnzOTsDAB2G4RS9gxqsgt98eO0kOC', 'https://lh3.googleusercontent.com/d/1m4oqCHb3bAJT_ix-YEQocQ3H6HncxW5f', 'https://lh3.googleusercontent.com/d/15O-IkdpF1chLzQDg2SOJdhpOZi6ez8T9', 'https://lh3.googleusercontent.com/d/1E2qhZKWS_LGml-KOpKEb-ZRiiCoifdxa',
         ];
 
         // 4. CHỈNH SỬA LỜI NHẮN CUỐI CÙNG
         const finalMessageText = "Anh nghĩ sau buổi nói chuyện hôm nay mình có thể hiểu nhau nhìu hơn rất nhiều rồi ha em, anh cũng rất mong mình không còn 1 xíu nào hiểu lầm nào hết trơn á . Anh rất yêu em ❤️";
+
+        // ⭐ 5. CHỈNH SỬA TÊN NÚT BẤM CUỐI CÙNG
+        const revealButtonText = "Món quà cho em nè 💖";
 
         // =========================================================================
         // === ⚙️ HỆ THỐNG XỬ LÝ (Không cần chỉnh sửa phần dưới này) ⚙️ ===
@@ -300,7 +276,9 @@
         
         const cardContainer = document.getElementById('card-container');
         const endScreen = document.getElementById('end-screen');
+        const endContent = document.getElementById('end-content');
         const finalMessage = document.getElementById('final-message');
+        const revealButton = document.getElementById('reveal-button');
         let flippedCards = 0;
 
         if (backgroundImageLink) {
@@ -320,27 +298,13 @@
         function createCards() {
             const shuffledQuestions = shuffle([...questions]);
             const imagePool = shuffle([...cardImages]);
-            if (imagePool.length === 0) {
-                console.warn("Không có ảnh nào trong cardImages.");
-            }
+            if (imagePool.length === 0) { console.warn("Không có ảnh nào trong cardImages."); }
 
             for (let i = 0; i < 30; i++) {
                 const card = document.createElement('div');
                 card.classList.add('card');
-                
                 const imageUrl = imagePool.length > 0 ? imagePool[i % imagePool.length] : ''; 
-
-                card.innerHTML = `
-                    <div class="card-inner">
-                        <div class="card-face card-back" style="background-image: url('${imageUrl}')">
-                            <span></span>
-                        </div>
-                        <div class="card-face card-front">
-                            ${shuffledQuestions[i]}
-                        </div>
-                    </div>
-                `;
-
+                card.innerHTML = `<div class="card-inner"><div class="card-face card-back" style="background-image: url('${imageUrl}')"></div><div class="card-face card-front">${shuffledQuestions[i]}</div></div>`;
                 card.addEventListener('click', () => {
                     if (!card.classList.contains('flipped')) {
                         card.classList.add('flipped');
@@ -348,7 +312,6 @@
                         checkEndGame();
                     }
                 });
-                
                 cardContainer.appendChild(card);
             }
         }
@@ -356,12 +319,20 @@
         function checkEndGame() {
             if (flippedCards === 30) {
                 setTimeout(() => {
-                    finalMessage.textContent = finalMessageText;
-                    endScreen.classList.add('show');
-                    createHearts(50);
+                    revealButton.textContent = revealButtonText; // Gán tên cho nút
+                    revealButton.classList.add('visible'); // Hiện nút bấm
+                    endScreen.classList.add('show'); // Hiện màn hình mờ
                 }, 1000);
             }
         }
+
+        // Thêm sự kiện click cho nút bấm
+        revealButton.addEventListener('click', () => {
+            revealButton.style.display = 'none'; // Ẩn nút đi
+            finalMessage.textContent = finalMessageText; // Gán lời nhắn
+            endContent.classList.add('visible'); // Hiện lời nhắn
+            createHearts(50); // Bắt đầu hiệu ứng tim bay
+        });
         
         function createHearts(count) {
             for (let i = 0; i < count; i++) {
@@ -373,15 +344,10 @@
                     heart.style.left = `${Math.random() * 100}vw`;
                     heart.style.animationDuration = `${Math.random() * 2 + 3}s`;
                     heart.style.fontSize = `${Math.random() * 15 + 10}px`;
-                    
                     const xEnd = (Math.random() - 0.5) * 200;
                     heart.style.setProperty('--x-end', `${xEnd}px`);
-
                     document.body.appendChild(heart);
-                    
-                    setTimeout(() => {
-                        heart.remove();
-                    }, 5000);
+                    setTimeout(() => { heart.remove(); }, 5000);
                 }, Math.random() * 3000);
             }
         }
@@ -391,7 +357,3 @@
     </script>
 </body>
 </html>
-
-
-
-
