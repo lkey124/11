@@ -69,8 +69,8 @@
             margin: 0 auto;
             padding: 10px;
             box-sizing: border-box;
-            /* ⭐ SỬA LỖI: Luôn canh các lá bài từ bên trái */
-            justify-content: start;
+            /* ⭐ SỬA LỖI DỨT ĐIỂM: Dùng grid-auto-flow để lấp đầy khoảng trống */
+            grid-auto-flow: dense;
         }
 
         .card {
@@ -146,7 +146,6 @@
             to { transform: scale(1.2); opacity: 1; }
         }
 
-        /* --- LÁ BÀI BÍ ẨN CUỐI CÙNG --- */
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.8); }
             to { opacity: 1; transform: scale(1); }
@@ -168,7 +167,6 @@
             background: none;
         }
 
-        /* --- MÀN HÌNH KẾT THÚC --- */
         #end-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -192,7 +190,6 @@
         #end-screen.show .end-content { transform: scale(1); }
         #final-message { font-size: 1.3em; font-weight: 700; color: var(--primary-color); }
 
-        /* --- HIỆU ỨNG TRÁI TIM BAY --- */
         .heart {
             position: fixed;
             animation: floatUp 5s ease-in forwards;
@@ -204,7 +201,6 @@
             to { bottom: 100vh; opacity: 0; transform: translateX(var(--x-end)); }
         }
 
-        /* --- TỐI ƯU CHO ĐIỆN THOẠI --- */
         @media (max-width: 600px) {
             body { padding: 10px; }
             h1 { font-size: 1.8em; }
@@ -235,10 +231,6 @@
     <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // =========================================================================
-        // === 🖍️ KHU VỰC TÙY CHỈNH DÀNH CHO BẠN 🖍️ ===
-        // =========================================================================
-
         const backgroundImageLink = 'https://lh3.googleusercontent.com/d/1oJmLBjcRJMecvTmsbqSTY66Ecnj_6vwF';
         
         const cardBackBackgroundImage = 'https://i.pinimg.com/564x/4b/ea/e3/4beae3438d8a8c88a832386127885ddf.jpg';
@@ -260,11 +252,6 @@
         const finalCardFrontImage = 'https://i.pinimg.com/564x/4b/ea/e3/4beae3438d8a8c88a832386127885ddf.jpg';
         
         const finalCardBackImage = 'https://i.pinimg.com/564x/4b/ea/e3/4beae3438d8a8c88a832386127885ddf.jpg';
-
-
-        // =========================================================================
-        // === ⚙️ HỆ THỐNG XỬ LÝ (Không cần chỉnh sửa phần dưới này) ⚙️ ===
-        // =========================================================================
         
         const cardContainer = document.getElementById('card-container');
         const endScreen = document.getElementById('end-screen');
